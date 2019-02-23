@@ -1,0 +1,134 @@
+---
+title: "Project"
+author: "Wei Huang"
+date: "2/15/2019"
+output: html_document
+---
+```{r}
+library(rpart)
+
+```
+
+```{r setup, include=FALSE}
+df <- read.csv("clean_data.csv", header = TRUE)
+summary(df)
+
+```
+
+```{r}
+library(pROC)
+```
+
+#information gain
+```{r}
+info.gain <- function(x,y){
+  IG <- 0
+  df <- data.frame(x,y)
+  table_y <- table(y)
+  prob_table_y <-  data.frame(prop.table(table_y))
+  x_entropy <-c()
+  cond_entropy <-c()
+  for (i in 1:nrow(prob_table_y)) {
+    p_y <- prob_table_y[i,2]
+    y_cat <- as.character(prob_table_y[i,1])
+    x_value <- subset(df, y == y_cat)[,1]
+    x_entropy[i] <- entropy(x_value) * p_y
+  }
+  cond_entropy <- sum(x_entropy)
+  
+
+  IG <- entropy(x)-cond_entropy
+  return(IG)
+}
+```
+
+#feature selection function
+```{r}
+# Information-gain-based feature selection: exhaustive search
+# Input: df is a data frame with last column being the output attribute
+#        m: size of feature set, default is 1
+# Output: data frame with name(s) of selected feature(s), information gain, relative information gain, sorted by the value of information gain
+
+features <- function(df, m = 1, output){
+  
+  output.idx <- which(colnames(df)==output)
+  idx <- setdiff(1:ncol(df), output.idx) #The elements of setdiff(x,y) are those elements in x but not in y
+  nf <- ncol(df) -1 #number of input features
+ 
+  output <- df[, output.idx]  # output column
+  outputH <- entropy(output) # entropy for output
+  idx.list <- combn(idx, m) #a matrix storing all combinations of size m from idx
+  IG.res <-NULL #output data frame
+  #iterate through all combination of index 
+  for (ii in 1:ncol(idx.list)){
+    this.idx <- idx.list[, ii]  
+    input.df <- data.frame(df[,this.idx]) 
+    
+    #create a vector each element is concatenation of all values of a row of a data frame
+    this.input <- apply(input.df, 1, paste, collapse='') 
+    
+    #create new feature name which is a concatenation of feature names in a feature set
+    this.input.names <- paste(names(df)[this.idx], collapse=' ')    
+    this.IG <-info.gain(this.input,output) #information gain
+    # this.RIG <- this.IG / outputH #relative information gain
+    this.res <- data.frame(feature = this.input.names, IG = this.IG) #assemble a df
+    IG.res <- rbind(IG.res, this.res) #concatenate the results    
+  }
+  
+  sorted <- IG.res[order(-IG.res$IG), ] #sort by information gain in descending order
+  return (sorted)
+}
+```
+
+
+```{r}
+#(Use a 80 (train):20(test) test split method
+set.seed(430)
+levels(df$user)
+df_debora <- subset(df, df$user == "debora")
+df_debora$values <-ifelse(df_debora$class == "sitting", 0,
+                          ifelse(df_debora$class == "sittingdown", 1,
+                                 ifelse(df_debora$class == "standing", 2,
+                                        ifelse(df_debora$class == "standingup", 3, 4))))
+```
+
+```{r}
+#select data  from  df_debora: 1000 for each class
+
+data_sitting_debora <- subset(df_debora, df_debora$values == 0)[1:1000,]
+data_sittingdown_debora <- subset(df_debora, df_debora$values == 1)[1:1000,]
+data_standing_debora <- subset(df_debora, df_debora$values == 2)[1:1000,]
+data_standingup_debora <- subset(df_debora, df_debora$values == 3)[1:1000,]
+data_walking_debora <- subset(df_debora, df_debora$values == 4)[1:1000,]
+df_try <- rbind(data_sitting_debora, 
+                data_sittingdown_debora, 
+                data_standing_debora,
+                data_standingup_debora,
+                data_walking_debora)
+df_try <- data.frame(df_try)
+
+```
+
+
+
+```{r}
+data_idx <- sample(1:nrow(df_try), nrow(df_try)*0.8)
+data_trn <- df_try[data_idx,]
+data_tst <- df_try[-data_idx,]
+
+price_rpart <- rpart(values ~ ., data = data_trn, method = 'class')
+pre_test <- predict(price_rpart, newdata = data_tst, type = 'prob')
+roc_test <- roc(data_tst$values ~ pre_test[,1], plot = TRUE, print.auc = TRUE)
+as.numeric(roc_test$auc)
+
+
+```
+
+
+
+`
+
+
+
+
+
