@@ -6,13 +6,349 @@ output: html_document
 ---
 ```{r}
 library(rpart)
-
+library(rpart.plot)
 ```
 
 ```{r setup, include=FALSE}
-df <- read.csv("clean_data.csv", header = TRUE)
+df <- read.csv("clean_data_edit.csv", header = TRUE)
 summary(df)
 
+```
+
+```{r}
+
+# debora_sitting <- subset(df, user == "debora" & class == "sitting")
+# debora_sitting$time <- c(1:nrow(debora_sitting))
+# debora_sitting
+usr_action <- data.frame()
+split_user_time <- function(username, action){
+  user_action <- subset(df, user == username & class == action)
+  user_action$time <- c(1:nrow(user_action))
+  return(user_action)
+}
+katia_sitting <- split_user_time("katia", "sitting")
+katia_standing <- split_user_time("katia", "standing")
+katia_sittingdown <- split_user_time("katia", "sittingdown")
+katia_standingup <- split_user_time("katia", "standingup")
+katia_walking <- split_user_time("katia", "walking")
+
+katia_time <- rbind(katia_sitting,katia_standing,katia_sittingdown, katia_standingup,katia_walking)
+
+wallace_sitting <- split_user_time("wallace", "sitting")
+wallace_standing <- split_user_time("wallace", "standing")
+wallace_sittingdown <- split_user_time("wallace", "sittingdown")
+wallace_standingup <- split_user_time("wallace", "standingup")
+wallace_walking <- split_user_time("wallace", "walking")
+
+wallace_time <- rbind(wallace_sitting,wallace_standing,wallace_sittingdown, wallace_standingup,wallace_walking)
+
+write.csv(katia_sitting, file ='katia_sitting.csv')
+write.csv(katia_standing, file ='katia_standing.csv')
+write.csv(katia_sittingdown, file ='katia_sittingdown.csv')
+write.csv(katia_standingup, file ='katia_standingup.csv')
+write.csv(katia_walking, file ='katia_walking.csv')
+write.csv(wallace_sitting, file ='wallace_sitting.csv')
+write.csv(wallace_standing, file ='wallace_standing.csv')
+write.csv(wallace_sittingdown, file ='wallace_sittingdown.csv')
+write.csv(wallace_standingup, file ='wallace_standingup.csv')
+write.csv(wallace_walking, file ='wallace_walking.csv')
+
+```
+
+```{r}
+par(mfrow = c(3,3))
+plot(katia_sitting$time, katia_sitting$x1, type="l", xlab = "time", ylab = "sitting_x1", main = "Katia")
+plot(katia_sitting$time, katia_sitting$x2, type="l", xlab = "time", ylab = "sitting_x2", main = "Katia")
+plot(katia_sitting$time, katia_sitting$x3, type="l", xlab = "time", ylab = "sitting_x3", main = "Katia")
+plot(katia_sitting$time, katia_sitting$x4, type="l", xlab = "time", ylab = "sitting_x4", main = "Katia")
+
+plot(katia_sitting$time, katia_sitting$y1, type="l", xlab = "time", ylab = "sitting_y1", main = "Katia")
+plot(katia_sitting$time, katia_sitting$y2, type="l", xlab = "time", ylab = "sitting_y2", main = "Katia")
+plot(katia_sitting$time, katia_sitting$y3, type="l", xlab = "time", ylab = "sitting_y3", main = "Katia")
+plot(katia_sitting$time, katia_sitting$y4, type="l", xlab = "time", ylab = "sitting_y4", main = "Katia")
+
+plot(katia_sitting$time, katia_sitting$z1, type="l", xlab = "time", ylab = "sitting_z1", main = "Katia")
+plot(katia_sitting$time, katia_sitting$z2, type="l", xlab = "time", ylab = "sitting_z2", main = "Katia")
+plot(katia_sitting$time, katia_sitting$z3, type="l", xlab = "time", ylab = "sitting_z3", main = "Katia")
+plot(katia_sitting$time, katia_sitting$z4, type="l", xlab = "time", ylab = "sitting_z4", main = "Katia")
+
+plot(katia_standing$time, katia_standing$x1, type="l", xlab = "time", ylab = "standing_x1", main = "Katia")
+plot(katia_standing$time, katia_standing$x2, type="l", xlab = "time", ylab = "standing_x2", main = "Katia")
+plot(katia_standing$time, katia_standing$x3, type="l", xlab = "time", ylab = "standing_x3", main = "Katia")
+plot(katia_standing$time, katia_standing$x4, type="l", xlab = "time", ylab = "standing_x4", main = "Katia")
+
+plot(katia_standing$time, katia_standing$y1, type="l", xlab = "time", ylab = "standing_y1", main = "Katia")
+plot(katia_standing$time, katia_standing$y2, type="l", xlab = "time", ylab = "standing_y2", main = "Katia")
+plot(katia_standing$time, katia_standing$y3, type="l", xlab = "time", ylab = "standing_y3", main = "Katia")
+plot(katia_standing$time, katia_standing$y4, type="l", xlab = "time", ylab = "standing_y4", main = "Katia")
+
+plot(katia_standing$time, katia_standing$z1, type="l", xlab = "time", ylab = "standing_z1", main = "Katia")
+plot(katia_standing$time, katia_standing$z2, type="l", xlab = "time", ylab = "standing_z2", main = "Katia")
+plot(katia_standing$time, katia_standing$z3, type="l", xlab = "time", ylab = "standing_z3", main = "Katia")
+plot(katia_standing$time, katia_standing$z4, type="l", xlab = "time", ylab = "standing_z4", main = "Katia")
+
+plot(katia_sittingdown$time, katia_sittingdown$x1, type="l", xlab = "time", ylab = "sittingdown_x1", main = "Katia")
+plot(katia_sittingdown$time, katia_sittingdown$x2, type="l", xlab = "time", ylab = "sittingdown_x2", main = "Katia")
+plot(katia_sittingdown$time, katia_sittingdown$x3, type="l", xlab = "time", ylab = "sittingdown_x3", main = "Katia")
+plot(katia_sittingdown$time, katia_sittingdown$x4, type="l", xlab = "time", ylab = "sittingdown_x4", main = "Katia")
+
+plot(katia_sittingdown$time, katia_sittingdown$y1, type="l", xlab = "time", ylab = "sittingdown_y1", main = "Katia")
+plot(katia_sittingdown$time, katia_sittingdown$y2, type="l", xlab = "time", ylab = "sittingdown_y2", main = "Katia")
+plot(katia_sittingdown$time, katia_sittingdown$y3, type="l", xlab = "time", ylab = "sittingdown_y3", main = "Katia")
+plot(katia_sittingdown$time, katia_sittingdown$y4, type="l", xlab = "time", ylab = "sittingdown_y4", main = "Katia")
+
+
+plot(katia_sittingdown$time, katia_sittingdown$z1, type="l", xlab = "time", ylab = "sittingdown_z1", main = "Katia")
+plot(katia_sittingdown$time, katia_sittingdown$z2, type="l", xlab = "time", ylab = "sittingdown_z2", main = "Katia")
+plot(katia_sittingdown$time, katia_sittingdown$z3, type="l", xlab = "time", ylab = "sittingdown_z3", main = "Katia")
+plot(katia_sittingdown$time, katia_sittingdown$z4, type="l", xlab = "time", ylab = "sittingdown_z4", main = "Katia")
+
+plot(katia_standingup$time, katia_standingup$x1, type="l", xlab = "time", ylab = "standingup_x1", main = "Katia")
+plot(katia_standingup$time, katia_standingup$x2, type="l", xlab = "time", ylab = "standingup_x2", main = "Katia")
+plot(katia_standingup$time, katia_standingup$x3, type="l", xlab = "time", ylab = "standingup_x3", main = "Katia")
+plot(katia_standingup$time, katia_standingup$x4, type="l", xlab = "time", ylab = "standingup_x4", main = "Katia")
+
+plot(katia_standingup$time, katia_standingup$y1, type="l", xlab = "time", ylab = "standingup_y1", main = "Katia")
+plot(katia_standingup$time, katia_standingup$y2, type="l", xlab = "time", ylab = "standingup_y2", main = "Katia")
+plot(katia_standingup$time, katia_standingup$y3, type="l", xlab = "time", ylab = "standingup_y3", main = "Katia")
+plot(katia_standingup$time, katia_standingup$y4, type="l", xlab = "time", ylab = "standingup_y4", main = "Katia")
+
+
+plot(katia_standingup$time, katia_standingup$z1, type="l", xlab = "time", ylab = "standingup_z1", main = "Katia")
+plot(katia_standingup$time, katia_standingup$z2, type="l", xlab = "time", ylab = "standingup_z2", main = "Katia")
+plot(katia_standingup$time, katia_standingup$z3, type="l", xlab = "time", ylab = "standingup_z3", main = "Katia")
+plot(katia_standingup$time, katia_standingup$z4, type="l", xlab = "time", ylab = "standingup_z4", main = "Katia")
+
+plot(katia_walking$time, katia_walking$x1, type="l", xlab = "time", ylab = "walking_x1", main = "Katia")
+plot(katia_walking$time, katia_walking$x2, type="l", xlab = "time", ylab = "walking_x2", main = "Katia")
+plot(katia_walking$time, katia_walking$x3, type="l", xlab = "time", ylab = "walking_x3", main = "Katia")
+plot(katia_walking$time, katia_walking$x4, type="l", xlab = "time", ylab = "walking_x4", main = "Katia")
+
+plot(katia_walking$time, katia_walking$y1, type="l", xlab = "time", ylab = "walking_y1", main = "Katia")
+plot(katia_walking$time, katia_walking$y2, type="l", xlab = "time", ylab = "walking_y2", main = "Katia")
+plot(katia_walking$time, katia_walking$y3, type="l", xlab = "time", ylab = "walking_y3", main = "Katia")
+plot(katia_walking$time, katia_walking$y4, type="l", xlab = "time", ylab = "walking_y4", main = "Katia")
+
+plot(katia_walking$time, katia_walking$z1, type="l", xlab = "time", ylab = "walking_z1", main = "Katia")
+plot(katia_walking$time, katia_walking$z2, type="l", xlab = "time", ylab = "walking_z2", main = "Katia")
+plot(katia_walking$time, katia_walking$z3, type="l", xlab = "time", ylab = "walking_z3", main = "Katia")
+plot(katia_walking$time, katia_walking$z4, type="l", xlab = "time", ylab = "walking_z4", main = "Katia")
+
+```
+
+```{r}
+par(mfrow = c(3,3))
+plot(wallace_sitting$time, wallace_sitting$x1, type="l", xlab = "time", ylab = "sitting_x1", main = "wallace")
+plot(wallace_sitting$time, wallace_sitting$x2, type="l", xlab = "time", ylab = "sitting_x2", main = "wallace")
+plot(wallace_sitting$time, wallace_sitting$x3, type="l", xlab = "time", ylab = "sitting_x3", main = "wallace")
+plot(wallace_sitting$time, wallace_sitting$x4, type="l", xlab = "time", ylab = "sitting_x4", main = "wallace")
+
+plot(wallace_sitting$time, wallace_sitting$y1, type="l", xlab = "time", ylab = "sitting_y1", main = "wallace")
+plot(wallace_sitting$time, wallace_sitting$y2, type="l", xlab = "time", ylab = "sitting_y2", main = "wallace")
+plot(wallace_sitting$time, wallace_sitting$y3, type="l", xlab = "time", ylab = "sitting_y3", main = "wallace")
+
+plot(wallace_sitting$time, wallace_sitting$z1, type="l", xlab = "time", ylab = "sitting_z1", main = "wallace")
+plot(wallace_sitting$time, wallace_sitting$z2, type="l", xlab = "time", ylab = "sitting_z2", main = "wallace")
+plot(wallace_sitting$time, wallace_sitting$z3, type="l", xlab = "time", ylab = "sitting_z3", main = "wallace")
+
+plot(wallace_standing$time, wallace_standing$x1, type="l", xlab = "time", ylab = "standing_x1", main = "wallace")
+plot(wallace_standing$time, wallace_standing$x2, type="l", xlab = "time", ylab = "standing_x2", main = "wallace")
+plot(wallace_standing$time, wallace_standing$x3, type="l", xlab = "time", ylab = "standing_x3", main = "wallace")
+
+plot(wallace_standing$time, wallace_standing$y1, type="l", xlab = "time", ylab = "standing_y1", main = "wallace")
+plot(wallace_standing$time, wallace_standing$y2, type="l", xlab = "time", ylab = "standing_y2", main = "wallace")
+plot(wallace_standing$time, wallace_standing$y3, type="l", xlab = "time", ylab = "standing_y3", main = "wallace")
+
+plot(wallace_standing$time, wallace_standing$z1, type="l", xlab = "time", ylab = "standing_z1", main = "wallace")
+plot(wallace_standing$time, wallace_standing$z2, type="l", xlab = "time", ylab = "standing_z2", main = "wallace")
+plot(wallace_standing$time, wallace_standing$z3, type="l", xlab = "time", ylab = "standing_z3", main = "wallace")
+
+plot(wallace_sittingdown$time, wallace_sittingdown$x1, type="l", xlab = "time", ylab = "sittingdown_x1", main = "wallace")
+plot(wallace_sittingdown$time, wallace_sittingdown$x2, type="l", xlab = "time", ylab = "sittingdown_x2", main = "wallace")
+plot(wallace_sittingdown$time, wallace_sittingdown$x3, type="l", xlab = "time", ylab = "sittingdown_x3", main = "wallace")
+
+plot(wallace_sittingdown$time, wallace_sittingdown$y1, type="l", xlab = "time", ylab = "sittingdown_y1", main = "wallace")
+plot(wallace_sittingdown$time, wallace_sittingdown$y2, type="l", xlab = "time", ylab = "sittingdown_y2", main = "wallace")
+plot(wallace_sittingdown$time, wallace_sittingdown$y3, type="l", xlab = "time", ylab = "sittingdown_y3", main = "wallace")
+
+plot(wallace_sittingdown$time, wallace_sittingdown$z1, type="l", xlab = "time", ylab = "sittingdown_z1", main = "wallace")
+plot(wallace_sittingdown$time, wallace_sittingdown$z2, type="l", xlab = "time", ylab = "sittingdown_z2", main = "wallace")
+plot(wallace_sittingdown$time, wallace_sittingdown$z3, type="l", xlab = "time", ylab = "sittingdown_z3", main = "wallace")
+
+plot(wallace_standingup$time, wallace_standingup$x1, type="l", xlab = "time", ylab = "standingup_x1", main = "wallace")
+plot(wallace_standingup$time, wallace_standingup$x2, type="l", xlab = "time", ylab = "standingup_x2", main = "wallace")
+plot(wallace_standingup$time, wallace_standingup$x3, type="l", xlab = "time", ylab = "standingup_x3", main = "wallace")
+
+plot(wallace_standingup$time, wallace_standingup$y1, type="l", xlab = "time", ylab = "standingup_y1", main = "wallace")
+plot(wallace_standingup$time, wallace_standingup$y2, type="l", xlab = "time", ylab = "standingup_y2", main = "wallace")
+plot(wallace_standingup$time, wallace_standingup$y3, type="l", xlab = "time", ylab = "standingup_y3", main = "wallace")
+
+plot(wallace_standingup$time, wallace_standingup$z1, type="l", xlab = "time", ylab = "standingup_z1", main = "wallace")
+plot(wallace_standingup$time, wallace_standingup$z2, type="l", xlab = "time", ylab = "standingup_z2", main = "wallace")
+plot(wallace_standingup$time, wallace_standingup$z3, type="l", xlab = "time", ylab = "standingup_z3", main = "wallace")
+
+plot(wallace_walking$time, wallace_walking$x1, type="l", xlab = "time", ylab = "walking_x1", main = "wallace")
+plot(wallace_walking$time, wallace_walking$x2, type="l", xlab = "time", ylab = "walking_x2", main = "wallace")
+plot(wallace_walking$time, wallace_walking$x3, type="l", xlab = "time", ylab = "walking_x3", main = "wallace")
+
+plot(wallace_walking$time, wallace_walking$y1, type="l", xlab = "time", ylab = "walking_y1", main = "wallace")
+plot(wallace_walking$time, wallace_walking$y2, type="l", xlab = "time", ylab = "walking_y2", main = "wallace")
+plot(wallace_walking$time, wallace_walking$y3, type="l", xlab = "time", ylab = "walking_y3", main = "wallace")
+
+plot(wallace_walking$time, wallace_walking$z1, type="l", xlab = "time", ylab = "walking_z1", main = "wallace")
+plot(wallace_walking$time, wallace_walking$z2, type="l", xlab = "time", ylab = "walking_z2", main = "wallace")
+plot(wallace_walking$time, wallace_walking$z3, type="l", xlab = "time", ylab = "walking_z3", main = "wallace")
+
+
+
+```
+
+```{r}
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...) {
+    usr <- par("usr"); on.exit(par(usr))
+    par(usr = c(0, 1, 0, 1))
+    r <- abs(cor(x, y, use = "complete.obs"))
+    txt <- format(c(r, 0.123456789), digits = digits)[1]
+    txt <- paste0(prefix, txt)
+    if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+    text(0.5, 0.5, txt, cex = cex.cor * r)
+}
+
+pairs(katia_sitting[,c("x1", "x2", "x3", "y1","y2","y3", "z1", "z2", "z3")], lower.panel = panel.cor)
+pairs(katia_standing[,c("x1", "x2", "x3", "y1","y2","y3", "z1", "z2", "z3")], lower.panel = panel.cor)
+
+```
+#katia_sitting:x3, y3; y3, z3; x3,z3; katia_standing: x2,y2; x2,z2; x3,y3; x3,z3; y2,z2;y3,z3
+
+```{r}
+# katiadata <- read.csv("katiadata.csv")
+# katiadata <- split_data(katiadata, "katia")
+# rownames(katiadata) <- NULL
+#katiadata
+df2 <- read.csv("feature.csv", header = TRUE)
+
+df2$values <- ifelse(df2$label == "sitting", 0,
+                    ifelse(df2$label == "sittingdown", 1,
+                           ifelse(df2$label == "standing", 2,
+                                  ifelse(df2$label == "standingup", 3, 4))))
+mean_name_index <- which(grepl("mean", names(df2)) == TRUE)
+variance_name_index <- which(grepl("variance", names(df2)) == TRUE)
+index_mean_variance <- c(1, mean_name_index, variance_name_index,ncol(df2))
+df_test <- df2[, index_mean_variance]
+df_test
+#write.csv(df_test, file = "mean_variance_df.csv")
+```
+
+```{r}
+library(leaps)
+
+
+
+```
+# cv for feature seleciton
+```{r}
+set.seed(43)
+train <- sample(c(TRUE,FALSE), nrow(df_test),rep=TRUE)
+test <- (!train)
+
+regfit_best <- regsubsets(values~.,data=df_test[train,],nvmax=16)
+
+test_mat <- model.matrix(values~.,data=df_test[test,])
+head(test_mat)
+
+
+```
+
+```{r}
+val_errors <- rep(NA,14)
+for(i in 1:14){
+    # Extract Coeff
+   coefi <- coef(regfit_best,id = i)
+    # Get predictions
+   pred <- test_mat[,names(coefi)]%*%coefi
+    # Calculation test set error
+   val_errors[i] <- mean((df_test$values[test]-pred)^2)
+}
+
+val_errors
+which.min(val_errors)
+coef(regfit_best,12)
+
+
+```
+
+
+```{r}
+predict.regsubsets=function(object,newdata,id,...){
+  form=as.formula(object$call[[2]])
+  mat=model.matrix(form,newdata)
+  coefi=coef(object,id=id)
+  xvars=names(coefi)
+  mat[,xvars]%*%coefi
+  }
+
+k=10
+set.seed(43)
+folds <- sample(1:k,nrow(df_test),replace = TRUE)
+cv_errors <- matrix(NA,k,14, dimnames=list(NULL, paste(1:14)))
+
+for(j in 1:k){
+  best_fit <- regsubsets(values~.,data=df_test[folds!=j,],nvmax=14)
+  for(i in 1:14){
+    pred <- predict(best_fit,df_test[folds==j,],id=i)
+    cv_errors[j,i] <- mean( (df_test$values[folds==j]-pred)^2) # MSE
+    }
+  }
+dim(cv_errors)
+cv_errors
+```
+```{r}
+mean_cv_errors <- apply(cv_errors,2,mean)
+mean_cv_errors
+par(mfrow=c(1,1))
+plot(mean_cv_errors,type='b')
+
+
+```
+
+```{r}
+reg.best <- regsubsets(values~.,data=df_test, nvmax=7)
+coef(reg.best,7)
+
+```
+# Using RSS, adjusted R^2
+```{r}
+regfit_full <- regsubsets(values ~ ., df_test, nvmax = 19)
+reg_summary <- summary(regfit_full)
+reg_summary
+
+```
+
+```{r}
+names(reg_summary)
+#R^2
+reg_summary$rsq
+which.max(reg_summary$rsq)
+plot(reg_summary$rsq,xlab="Number of Variables",ylab="RSq",type="l")
+# points(16,reg_summary$rsq[16], col="red",cex=2,pch=20)
+
+par(mfrow=c(2,2))
+plot(reg_summary$rss,xlab="Number of Variables",ylab="RSS",type="l")
+
+# MAX R2
+which.max(reg_summary$adjr2)
+plot(reg_summary$adjr2,xlab="Number of Variables",ylab="Adjusted RSq",type="l")
+# points(7,reg_summary$adjr2[7], col="red",cex=2,pch=20)
+
+# MIN Cp 
+which.min(reg_summary$cp)
+plot(reg_summary$cp,xlab="Number of Variables",ylab="Cp",type='l')
+# points(7,reg_summary$cp[7],col="red",cex=2,pch=20)
+
+# MIN BIC
+which.min(reg_summary$bic)
+plot(reg_summary$bic,xlab="Number of Variables",ylab="BIC",type='l')
+# points(7,reg_summary$bic[7],col="red",cex=2,pch=20)
 ```
 
 ```{r}
@@ -40,6 +376,12 @@ info.gain <- function(x,y){
   IG <- entropy(x)-cond_entropy
   return(IG)
 }
+```
+
+```{r}
+
+
+
 ```
 
 #feature selection function
@@ -85,48 +427,146 @@ features <- function(df, m = 1, output){
 #(Use a 80 (train):20(test) test split method
 set.seed(430)
 levels(df$user)
-df_debora <- subset(df, df$user == "debora")
-df_debora$values <-ifelse(df_debora$class == "sitting", 0,
-                          ifelse(df_debora$class == "sittingdown", 1,
-                                 ifelse(df_debora$class == "standing", 2,
-                                        ifelse(df_debora$class == "standingup", 3, 4))))
+split_data <- function(data, username){
+  df_user <- subset(df, df$user == username)
+  df_user$values <-ifelse(df_user$class == "sitting", 0,
+                          ifelse(df_user$class == "sittingdown", 1,
+                                 ifelse(df_user$class == "standing", 2,
+                                        ifelse(df_user$class == "standingup", 3, 4))))
+  return(df_user)
+}
+#split data set for Debora
+df_debora <- data.frame(split_data(df,"debora"))
+#split data set for jose_carlos
+df_jose <- data.frame(split_data(df,"jose_carlos"))
+#split data set for katia
+df_jose <- data.frame(split_data(df,"katia"))
+#split data set for wallace
+df_wallace <- data.frame(split_data(df,"wallace"))
+
 ```
 
 ```{r}
-#select data  from  df_debora: 1000 for each class
+#generating moving window for each personal dataset
+library(evobiR)
+window <- function(dataName){
+  each_window <- data.frame(1:ceiling((nrow(dataName)-1000)/120))
+  for (n in 4:ncol(dataName)) {
+    data <- as.numeric(dataName[,n])
+    slide_wind <- data.frame(SlidingWindow(mean, data, 1000, 120))
+    each_window <- cbind(each_window, slide_wind)
+    }
+  each_window[,1] <- NULL
+  names(each_window) <- names(dataName)[c(-1,-2,-3)]
+  each_window <- each_window[-which(colnames(each_window)=="class" )]
+  return(each_window)
+}
 
-data_sitting_debora <- subset(df_debora, df_debora$values == 0)[1:1000,]
-data_sittingdown_debora <- subset(df_debora, df_debora$values == 1)[1:1000,]
-data_standing_debora <- subset(df_debora, df_debora$values == 2)[1:1000,]
-data_standingup_debora <- subset(df_debora, df_debora$values == 3)[1:1000,]
-data_walking_debora <- subset(df_debora, df_debora$values == 4)[1:1000,]
-df_try <- rbind(data_sitting_debora, 
-                data_sittingdown_debora, 
-                data_standing_debora,
-                data_standingup_debora,
-                data_walking_debora)
-df_try <- data.frame(df_try)
-
+#moving window for Debora
+debora_window <- data.frame(window(df_debora))
+# write.csv(debora_window, file ='debora_window.csv')
+#moving window for "jose_carlos" 
+jose_window <- data.frame(window(df_jose))
+#moving window for "katia"  
+katia_window <- data.frame(window(df_katia))
+#moving window for "wallace"    
+wallace_window <- data.frame(window(df_wallace))
+data_window <- rbind(debora_window, jose_window, katia_window, wallace_window)
 ```
-
-
 
 ```{r}
-data_idx <- sample(1:nrow(df_try), nrow(df_try)*0.8)
-data_trn <- df_try[data_idx,]
-data_tst <- df_try[-data_idx,]
 
-price_rpart <- rpart(values ~ ., data = data_trn, method = 'class')
-pre_test <- predict(price_rpart, newdata = data_tst, type = 'prob')
-roc_test <- roc(data_tst$values ~ pre_test[,1], plot = TRUE, print.auc = TRUE)
-as.numeric(roc_test$auc)
+
+
+
+
+```
+# Cross Validation(4-folds)
+```{r}
+# get_folds <- function(nn, k) {
+#   index <- seq(1, nn)
+#  	rand.index <- sample(index, nn) 
+#  	group <-seq_along(rand.index)%%k
+#  	chunk <- split(rand.index, group)
+#      return(chunk)
+#  }
+
+
+# do_cv <- function(df, k, model) {
+# 	nn <- nrow(df)
+# 	nf <- ncol(df)
+# 	folds <- get_folds(nn, k)
+# 	score <- rep(NA, length(folds)) 
+# 	for (ii in 1:length(folds)) 
+# 	{
+# 		test.index <- folds[[ii]]
+# 		train.data <- df[-test.index, ] 
+# 		test.data <- df[test.index, ]
+# 		pred <- model(train.data, test.data) 
+# 		true <- test.data[, nf]
+# 		mse <- mean((pred - true)^2) 
+# 		score[ii] = mse
+# 	}
+# 	return(score) 
+# }
+
+
+
+
+
+
+```
+#decision tree test for debora
+```{r}
+# data_idx_1 <- data_idx[1:0.3* nrow(data_window), ]
+# data_trn_1 <- data_window[]
 
 
 ```
 
+```{r}
+# data_idx <- sample(1:nrow(debora_window), nrow(debora_window)*0.8)
+# data_trn <- debora_window[data_idx,]
+# data_tst <- debora_window[-data_idx,]
+# 
+# debora_rpart <- rpart(values ~ ., data = data_trn, method = 'class')
+# pre_test <- predict(debora_rpart, newdata = data_tst, type = 'prob')
+# roc_test <- multiclass.roc(data_tst$values ~ pre_test[,1], plot = FALSE, print.auc = TRUE)
+# as.numeric(roc_test$auc)
+```
+
+```{r}
+while (length(data_idx) !=  nrow(data_window)) {
+  i <- 1
+  for (i in i+nrow(data_window) * (1/3)) {
+    data_idx <- 
+    
+  }
+  
+  
+  
+}
+
+```
+
+```{r}
+# plotcp(debora_rpart)
+# min_cp <- debora_rpart$cptable[which.min(debora_rpart$cptable[,"xerror"]),"CP"]
+# 
+# min_cp
+# debora_rpart_prune <- prune(debora_rpart, cp = min_cp)
+# rpart.plot(debora_rpart_prune)
+# rpart.rules(debora_rpart_prune, cover = TRUE)
 
 
-`
+
+```
+
+```{r}
+
+
+
+```
 
 
 
